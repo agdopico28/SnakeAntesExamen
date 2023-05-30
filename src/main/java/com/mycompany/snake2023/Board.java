@@ -15,14 +15,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Vector;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 /**
  *
  * @author victor
  */
-public class Board extends javax.swing.JPanel {
+public class Board extends javax.swing.JPanel implements InitGamer{
  
     private Snake snake;
     public static final int NUM_ROWS = 20;
@@ -34,6 +36,11 @@ public class Board extends javax.swing.JPanel {
     private List<Direction> movements;
     private ScoreInterface scoreInterface;
     private int hightscore;
+
+    @Override
+    public void continueGame() {
+        timer.start();
+    }
     
     class MyKeyAdapter extends KeyAdapter {
         
@@ -111,7 +118,7 @@ public class Board extends javax.swing.JPanel {
         this.scoreInterface = incrementer;
     }
     
-    private void initGame() {
+    public void initGame() {
         snake = new Snake(4);
         movements = new Vector<>(2);
         food = foodFactory.getFood(snake);
@@ -148,7 +155,12 @@ public class Board extends javax.swing.JPanel {
     private void processGameOver() {
         timer.stop();
         removeKeyListener(keyAdapter);
-        int score = scoreInterface.getScore();
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        GameOverDialog gameOverDialog = new GameOverDialog(topFrame, true);
+        gameOverDialog.setInitGamer(this);
+        gameOverDialog.setScore(scoreInterface.getScore());
+        gameOverDialog.setVisible(true);
+        /*int score = scoreInterface.getScore();
         if(score> hightscore){
            hightscore = score;
        }
@@ -159,7 +171,7 @@ public class Board extends javax.swing.JPanel {
             initGame();
         } else {
             System.exit(0);
-        }
+        }*/
         // JFrame parentJFrame = (JFrame) SwingUtilities.getWindowAncestor(this); 
         // HighScoresDialog dialog = new HighScoresDialog(parentJFrame ,true);
         // dialog.setGetScorer(getScorer);
