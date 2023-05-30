@@ -14,7 +14,6 @@ public class GameOverDialog extends javax.swing.JDialog {
 
     public Board board; 
     public InitGamer initGamer;
-    private Frame thisParent;
     
     /**
      * Creates new form GameOverDialog
@@ -23,7 +22,6 @@ public class GameOverDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        thisParent = parent;
     }
     
     public void setScore(int score){
